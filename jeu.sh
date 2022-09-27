@@ -1,15 +1,21 @@
 #!/bin/bash
-## Mysterious Number
+# Mysterious Number
 echo "Bienvenue sur Mysterious Number, vous devez trouver le nombre en 0 et 99 !";
+# Saisi nom de l'utilisateur
 echo "Veuillez saisir votre nom :"
 read saisieNom;
 nbRandom=${RANDOM:0:1};
+
+# Saisi nombre de l'utilisateur
 echo "Veuillez saisir un nombre :";
 read saisieUser;
+
+# Initialisation des variables
 nbEssai=1;
 ptHisto=0;
 nbPlace=1;
 
+# Lancement du jeu
 while [ ${saisieUser} -ne ${nbRandom} ]
 do
     ((nbEssai++))
@@ -39,13 +45,16 @@ else
     echo "${saisieNom} ${nbEssai}" >> scoreboard.txt;
 fi;
 
+# Calcul sa position dans le classement
 cat scoreboard.txt | while read line; do
     laLigne=`grep -w ${line} scoreboard.txt | awk '{print $2}'`;
-    if [ "${laLigne}" -lt ${nbEssai} ]; then
+    if [ ${laLigne} -lt ${nbEssai} ]; then
         ((nbPlace++));
     fi;
     echo ${nbPlace};
 done;
+
+# bug - nbPlace garde 1 en valeur
 echo ${nbPlace};
 if [ ${nbPlace} -eq 1 ]; then
     echo "${saisieNom}, vous êtes ${nbPlace}er ! Félicitations !";
