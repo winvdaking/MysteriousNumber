@@ -4,7 +4,10 @@ echo "Bienvenue sur Mysterious Number, vous devez trouver le nombre en 0 et 99 !
 # Saisi nom de l'utilisateur
 echo "Veuillez saisir votre nom :"
 read saisieNom;
-nbRandom=${RANDOM:0:1};
+nbRandom=${RANDOM:0:2};
+
+echo "Veuillez saisir le nombre d'essai :";
+read nbEssaiChoisi;
 
 # Saisi nombre de l'utilisateur
 echo "Veuillez saisir un nombre :";
@@ -16,7 +19,7 @@ ptHisto=0;
 nbPlace=1;
 
 # Lancement du jeu
-while [ ${saisieUser} -ne ${nbRandom} ]
+while [ ${saisieUser} -ne ${nbRandom} && ${nbEssai} -ne ${nbEssaiChoisi}]
 do
     ((nbEssai++))
     if [ ${saisieUser} -gt ${nbRandom} ]; then
