@@ -1,4 +1,5 @@
 #!/bin/bash
+# Author : Dorian
 # Mysterious Number
 echo "Bienvenue sur Mysterious Number, vous devez trouver le nombre en 0 et 99 !";
 # Saisi nom de l'utilisateur
