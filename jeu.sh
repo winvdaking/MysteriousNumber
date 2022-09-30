@@ -2,25 +2,46 @@
 # Mysterious Number
 echo "Bienvenue sur Mysterious Number, vous devez trouver le nombre en 0 et 99 !";
 # Saisi nom de l'utilisateur
-echo "Veuillez saisir votre nom :"
-read saisieNom;
-nbRandom=${RANDOM:0:2};
+read -p "Veuillez saisir votre nom : " saisieNom;
 
-echo "Veuillez saisir le nombre d'essai :";
-read nbEssaiChoisi;
+if [ -z ${saisieNom} ]; then
+    printf '%s\n' "Vous devez saisir votre nom !";
+    exit 0;
+fi;
 
-# Saisi nombre de l'utilisateur
-echo "Veuillez saisir un nombre :";
-read saisieUser;
+read -p "Veuillez saisir le nombre d'essai : " nbEssaiChoisi;
+
+if [ -z ${nbEssaiChoisi} ]; then
+    printf '%s\n' "Vous devez saisir un nombre d'essai !";
+    exit 0;
+fi;
+
+if ! [[ ${nbEssaiChoisi} =~ ^[0-9]*$ ]]; then
+    printf '%s\n' "Vous devez saisir un nombre valide !";
+    exit 0;
+fi;
+
+read -p "Veuillez saisir un nombre : " saisieUser;
+
+if [ -z ${saisieUser} ]; then
+    printf '%s\n' "Vous devez saisir un nombre !";
+    exit 0;
+fi;
+
+if ! [[ ${saisieUser} =~ ^[0-9]*$ ]]; then
+    printf '%s\n' "Vous devez saisir un nombre valide !";
+    exit 0;
+fi;
 
 # Initialisation des variables
 nbEssai=1;
 ptHisto=0;
 nbPlace=1;
+nbRandom=${RANDOM:0:2};
 
 # Lancement du jeu
-while [ ${saisieUser} -ne ${nbRandom} && ${nbEssai} -ne ${nbEssaiChoisi}]
-do
+# Vérification de la saisie user et du nombre d'essai
+while [ ${saisieUser} -ne ${nbRandom} ] && [ ${nbEssai} -ne ${nbEssaiChoisi} ]; do
     ((nbEssai++))
     if [ ${saisieUser} -gt ${nbRandom} ]; then
         echo "Le nombre Mysterious est plus petit réessayez :";
@@ -30,7 +51,12 @@ do
     read saisieUser;
 done;
 
-echo "Félicitations ! Vous avez trouvé le nombre : ${nbRandom} en ${nbEssai} coups !";
+# Vérification si le joueur à trouver le nombre
+if [ ${saisieUser} -eq ${nbRandom} ]; then
+    echo "Félicitations ! Vous avez trouvé le nombre : ${nbRandom} en ${nbEssai} coups !";
+else
+    echo "Dommage le mysterious number est : ${nbRandom}";
+fi;
 
 if grep -w -q "${saisieNom}" scoreboard.txt; then
     # Récupère son nombre d'essai dans scoreboard.txt
@@ -51,17 +77,16 @@ fi;
 # Calcul sa position dans le classement
 cat scoreboard.txt | while read line; do
     laLigne=`grep -w ${line} scoreboard.txt | awk '{print $2}'`;
-    if [ ${laLigne} -lt ${nbEssai} ]; then
-        ((nbPlace++));
+    if [ ${nbEssai} -gt ${laLigne} ]; then
+        ((nbPlace++))
     fi;
-    echo ${nbPlace};
 done;
 
 # bug - nbPlace garde 1 en valeur
-echo ${nbPlace};
 if [ ${nbPlace} -eq 1 ]; then
     echo "${saisieNom}, vous êtes ${nbPlace}er ! Félicitations !";
 else
     echo "${saisieNom}, vous êtes ${nbPlace} ième !";
 fi;
+
 exit;

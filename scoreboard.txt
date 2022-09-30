@@ -1,4 +1,2 @@
-winv 2
-dodo 2
-titi 2
-cece 3
+winv 1
+dodo 5
